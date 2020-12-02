@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  rails_mongo:
+    build: .
+    environment:
+      - PORT=3000
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/rails_mongo
+    ports:
+      - "3000:3000"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+  mongodb:
+    image: "mongo:4.2.8"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGO_INITDB_DATABASE=${DATABASE}
+      - MONGODB_USER=${USERNAME}
+      - MONGODB_PASS=${PASS}
+    volumes:
+      - "mongodb:/var/lib/mongodb/data"
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb:
