@@ -11,8 +11,10 @@ services:
       - "3000:3000"
     links:
       - mongodb
+      - rabbitmq
     depends_on:
       - mongodb
+      - rabbitmq
   mongodb:
     image: "mongo:4.2.8"
     environment:
@@ -25,6 +27,16 @@ services:
       - "mongodb:/var/lib/mongodb/data"
     ports:
       - "27017:27017"
+  rabbitmq:
+    restart: always
+    image: rabbitmq:3.8.2-management
+    expose:
+      - 5672
+      - 15672
+    ports:
+      - 5672:5672
+      - 15672:15672
 
 volumes:
   mongodb:
+  rabbitmq:
