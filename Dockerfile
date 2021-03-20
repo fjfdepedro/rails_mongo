@@ -31,3 +31,8 @@ WORKDIR /rails_mongo
 
 COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
 COPY --from=builder /rails_mongo /rails_mongo
+
+RUN rm -f tmp/pids/server.pid
+RUN RAILS_ENV=production
+CMD ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+EXPOSE 3000
